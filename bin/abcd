@@ -52,17 +52,23 @@ from histogram""" % (5*(arg,)))
 def keys():
     with db:
         cursor = db.cursor()
+        cursor.execute("select count(*) from frame")
+        total_frames = cursor.fetchone()[0]
+        print("%10s %10d %s"%("", total_frames, "total frames"))
+
         cursor.execute("select * from frame_keys")
         print('frame keys')
+        print('%10s %10s %10s'%('percent','count','key'))
         print('----------')
         for count, key in cursor:
-            print("%10d %s"%(count, key))
+            print("%10.2f %10d %s"%(100*count/total_frames, count, key))
 
         cursor.execute("select * from atom_keys")
         print('atom keys')
+        print('%10s %10s %10s'%('percent','count','key'))
         print('----------')
         for count, key in cursor:
-            print("%10d %s"%(count, key))
+            print("%10.2f %10d %s"%(100*count/total_frames, count, key))
 
 if args.summarise:
     summarise()
