@@ -45,12 +45,6 @@ class ABCD:
                 {parse_query(f"count {q}")("frame")}
         ''')
 
-    def stats(self, q):
-        return self.q_table(f'''
-            with frame as ({self.frame_query()})
-                {parse_query(f"stats {q}")("frame")}
-        ''')
-
 
     def keys(self, q=''):
         return self.q_table(f'''

@@ -22,7 +22,7 @@ class Shell(ABCD, cmd.Cmd):
             print("%30s %d"%(v,d))
 
     def do_stats(self, arg):
-        print(self.stats(arg).to_string(index=False))
+        print(self.select(arg).describe())
 
 
     def do_import(self, arg):

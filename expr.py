@@ -1,14 +1,14 @@
 from collections import namedtuple
 
 """
-command := (select <columns> | count | stats <column> | hist <column> | <keys>) [where <query>]
+command := (select <columns> | count | hist <column> | <keys>) [where <query>]
 columns := <column> [<columns>]
 query := <expr> [(and | or) <query>]
 expr := <id> <op> ( value | <id> )
 op := gt | lt | geq | leq | eq
 """
 
-keywords = ('COUNT', 'SELECT', 'WHERE', 'STATS', 'HIST_NUM', 'HIST_STR')
+keywords = ('COUNT', 'SELECT', 'WHERE', 'HIST_NUM', 'HIST_STR')
 
 tokens = (
     'ID', 'NUMBER', 'REAL',
@@ -33,7 +33,6 @@ def t_ID(t):
         t.type = {
             'where': 'WHERE',
             'count': 'COUNT',
-            'stats': 'STATS',
             'hist_num': 'HIST_NUM', 'hist_str': 'HIST_STR',
             'select': 'SELECT',
             'and': 'AND', 'or': 'OR',
@@ -83,13 +82,6 @@ def p_command_select(t):
 def p_command_select_q(t):
     'command : SELECT ids WHERE expression'
     t[0] = lambda table: f'select {", ".join(t[2])} from {table} where {t[4]}'
-
-def p_command_stats(t):
-    'command : STATS ID'
-    t[0] = lambda table: f'select min({t[2]}), avg({t[2]}), max({t[2]}) from {table}'
-def p_command_stats_q(t):
-    'command : STATS ID WHERE expression'
-    t[0] = lambda table: f'select min({t[2]}), avg({t[2]}), max({t[2]}) from {table} where {t[4]}'
 
 def p_command_hist_num(t):
     '''command : HIST_NUM ID
