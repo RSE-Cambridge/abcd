@@ -65,13 +65,28 @@ class Shell(cmd.Cmd):
             print(f'avg {vavg}')
 
     def do_hist(self, arg):
-        import numpy as np
         with self.db as db, db.cursor() as cursor:
-            cursor.execute(f'with frame as {frame_query(cursor)} {parse_query(f"hist {arg}")("frame")}')
-            freqs, bins = np.histogram(np.fromiter((float(x[0]) for x in cursor.fetchall()), np.float), bins=20)
-            for freq, edge in zip([int(30*f/np.max(freqs)) for f in freqs], bins):
-                print('%12.6f %s' % (edge, '*'*freq))
+            cursor.execute('select key_type from frame_keys where key=%s', (arg.split(' ')[0],))
+            key_type = cursor.fetchone()[0]
 
+            if key_type == 'number':
+                cursor.execute(f'with frame as {frame_query(cursor)} {parse_query(f"hist_num {arg}")("frame")}')
+                import numpy as np
+                freqs, bins = np.histogram(np.fromiter((float(x[0]) for x in cursor.fetchall()), np.float), bins=20)
+                for freq, edge in zip([int(30*f/np.max(freqs)) for f in freqs], bins):
+                    print('%12.6f %s' % (edge, '*'*freq))
+
+            elif key_type == 'string':
+                cursor.execute(f'with frame as {frame_query(cursor)} {parse_query(f"hist_str {arg}")("frame")}')
+                counts = {value: count for value, count in cursor}
+                count_max = max(counts.values())
+                for value in sorted(counts):
+                    count = counts[value]
+                    freq = count/count_max
+                    print('%10d %40s %s' % (count, value, '*'*30*int(freq)))
+
+            else:
+                print(f'don\'t know how to plot histogram for type {key_type}')
 
     def do_import(self, arg):
         from import_file import import_file

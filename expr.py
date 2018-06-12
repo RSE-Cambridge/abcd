@@ -8,7 +8,7 @@ expr := <id> <op> ( value | <id> )
 op := gt | lt | geq | leq | eq
 """
 
-keywords = ('COUNT', 'SELECT', 'WHERE', 'STATS', 'HIST')
+keywords = ('COUNT', 'SELECT', 'WHERE', 'STATS', 'HIST_NUM', 'HIST_STR')
 
 tokens = (
     'ID', 'NUMBER', 'REAL',
@@ -34,7 +34,7 @@ def t_ID(t):
             'where': 'WHERE',
             'count': 'COUNT',
             'stats': 'STATS',
-            'hist': 'HIST',
+            'hist_num': 'HIST_NUM', 'hist_str': 'HIST_STR',
             'select': 'SELECT',
             'and': 'AND', 'or': 'OR',
             'lt': 'LT', 'leq': 'LEQ',
@@ -90,12 +90,19 @@ def p_command_stats_q(t):
     'command : STATS ID WHERE expression'
     t[0] = lambda table: f'select min({t[2]}), max({t[2]}), avg({t[2]}) from {table} where {t[4]}'
 
-def p_command_hist(t):
-    'command : HIST ID'
+def p_command_hist_num(t):
+    'command : HIST_NUM ID'
     t[0] = lambda table: f'select {t[2]} from {table}'
-def p_command_hist_q(t):
-    'command : HIST ID WHERE expression'
+def p_command_hist_num_q(t):
+    'command : HIST_NUM ID WHERE expression'
     t[0] = lambda table: f'select {t[2]} from {table} where {t[4]}'
+
+def p_command_hist_str(t):
+    'command : HIST_STR ID'
+    t[0] = lambda table: f'select {t[2]}, count(*) from {table} group by {t[2]} order by {t[2]}'
+def p_command_hist_str_q(t):
+    'command : HIST_STR ID WHERE expression'
+    t[0] = lambda table: f'select {t[2]}, count(*) from {table} where {t[4]} group by {t[2]} order by {t[2]}'
 
 def p_ids(t):
     '''ids : ID
