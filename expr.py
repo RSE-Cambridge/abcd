@@ -73,8 +73,8 @@ def p_command_count(t):
     'command : COUNT'
     t[0] = lambda table: f'select count(*) from {table}'
 def p_command_count_q(t):
-    'command : COUNT expression'
-    t[0] = lambda table: f'select count(*) from {table} where {t[2]}'
+    'command : COUNT WHERE expression'
+    t[0] = lambda table: f'select count(*) from {table} where {t[3]}'
 
 def p_command_select(t):
     '''command : SELECT ids

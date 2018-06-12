@@ -60,7 +60,7 @@ class ABCD:
                 from (
                     with frame as
                         {self.frame_query()}
-                        {parse_query(f"select frame_id where {q}")("frame")}
+                        {parse_query(f"select frame_id {q}")("frame")}
                 ) as frame_filtered natural inner join frame_raw
             ) x
             where key=key
