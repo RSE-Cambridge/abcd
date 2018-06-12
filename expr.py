@@ -73,36 +73,39 @@ def p_command_count(t):
     'command : COUNT'
     t[0] = lambda table: f'select count(*) from {table}'
 def p_command_count_q(t):
-    'command : COUNT WHERE expression'
-    t[0] = lambda table: f'select count(*) from {table} where {t[3]}'
+    'command : COUNT expression'
+    t[0] = lambda table: f'select count(*) from {table} where {t[2]}'
 
 def p_command_select(t):
-    'command : SELECT ids'
-    t[0] = lambda table: f'select {",".join(t[2])} from {table}'
+    '''command : SELECT ids
+               | SELECT ids WHERE'''
+    t[0] = lambda table: f'select {", ".join(t[2])} from {table}'
 def p_command_select_q(t):
     'command : SELECT ids WHERE expression'
-    t[0] = lambda table: f'select {",".join(t[2])} from {table} where {t[4]}'
+    t[0] = lambda table: f'select {", ".join(t[2])} from {table} where {t[4]}'
 
 def p_command_stats(t):
     'command : STATS ID'
-    t[0] = lambda table: f'select min({t[2]}), max({t[2]}), avg({t[2]}) from {table}'
+    t[0] = lambda table: f'select min({t[2]}), avg({t[2]}), max({t[2]}) from {table}'
 def p_command_stats_q(t):
     'command : STATS ID WHERE expression'
-    t[0] = lambda table: f'select min({t[2]}), max({t[2]}), avg({t[2]}) from {table} where {t[4]}'
+    t[0] = lambda table: f'select min({t[2]}), avg({t[2]}), max({t[2]}) from {table} where {t[4]}'
 
 def p_command_hist_num(t):
-    'command : HIST_NUM ID'
+    '''command : HIST_NUM ID
+               | HIST_NUM ID WHERE'''
     t[0] = lambda table: f'select {t[2]} from {table}'
 def p_command_hist_num_q(t):
     'command : HIST_NUM ID WHERE expression'
     t[0] = lambda table: f'select {t[2]} from {table} where {t[4]}'
 
 def p_command_hist_str(t):
-    'command : HIST_STR ID'
-    t[0] = lambda table: f'select {t[2]}, count(*) from {table} group by {t[2]} order by {t[2]}'
+    '''command : HIST_STR ID
+               | HIST_STR ID WHERE'''
+    t[0] = lambda table: f'select {t[2]} as value, count(*) from {table} group by {t[2]} order by {t[2]}'
 def p_command_hist_str_q(t):
     'command : HIST_STR ID WHERE expression'
-    t[0] = lambda table: f'select {t[2]}, count(*) from {table} where {t[4]} group by {t[2]} order by {t[2]}'
+    t[0] = lambda table: f'select {t[2]} as value, count(*) from {table} where {t[4]} group by {t[2]} order by {t[2]}'
 
 def p_ids(t):
     '''ids : ID
