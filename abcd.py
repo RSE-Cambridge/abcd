@@ -65,7 +65,7 @@ class ABCD:
             ) x
             where key=key
             group by key, key_type
-        ''')
+        ''').sort_values('key')
 
 
     def select(self, q):
