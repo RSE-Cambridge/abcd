@@ -8,8 +8,8 @@ addons:
   postgresql: "9.6"
 
 cache:
-  pip
   directories:
+    - $HOME/.cache/pip
     - data
 
 env:
