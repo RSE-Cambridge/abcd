@@ -28,7 +28,7 @@ for i in \
   IronGAP/bcc_surface.xyz \
   IronGAP/bcc_gamma_surface.xyz
 do
-  wget -nv http://www.libatoms.org/pub/Home/$i
+  wget -nv -nc http://www.libatoms.org/pub/Home/$i
 done
 
 for i in *.gz
