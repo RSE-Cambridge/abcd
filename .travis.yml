@@ -13,16 +13,17 @@ cache:
     - data
 
 env:
+  - PGUSER=postgres
   - ABCD_DB="postgresql://postgres@localhost/abcd"
 
 install:
   - pip install -r requirements.txt
 
 before_script:
-  - psql -U postgres -c 'show server_version;'
-  - psql -U postgres -c 'create database abcd;'
-  - psql -U postgres -d abcd -f sql/create.sql
-  - psql -U postgres -d abcd -f sql/views.sql
+  - psql -c 'show server_version;'
+  - psql -c 'create database abcd;'
+  - psql -d abcd -f sql/create.sql
+  - psql -d abcd -f sql/views.sql
   - bash download_data.sh
 
 script:
