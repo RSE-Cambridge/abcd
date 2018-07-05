@@ -26,5 +26,5 @@ before_script:
   - bash download_data.sh
 
 script:
-  - bash test.sh
+  - bash test_cli.sh
   - pytest

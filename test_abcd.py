@@ -6,7 +6,6 @@ from pytest import fixture
 def db():
     import abcd
     return abcd.ABCD('postgresql://localhost/abcd')
-           
 
 def test_count(db):
     db.count()
