@@ -4,6 +4,8 @@ services:
 
 python:
   - "3.6"
+addons:
+  postgresql: "10"
 
 env:
   - ABCD_DB="postgresql://postgres@localhost/abcd"
