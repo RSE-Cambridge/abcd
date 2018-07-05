@@ -9,6 +9,8 @@ addons:
 
 cache:
   pip
+  directories:
+    - data
 
 env:
   - ABCD_DB="postgresql://postgres@localhost/abcd"
