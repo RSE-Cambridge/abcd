@@ -1,0 +1,29 @@
+language: python
+services:
+  - postgresql
+
+python:
+  - "3.6"
+addons:
+  postgresql: "9.6"
+
+cache:
+  directories:
+    - $HOME/.cache/pip
+    - data
+
+env:
+  - ABCD_DB="postgresql://postgres@localhost/abcd"
+
+install:
+  - pip install -r requirements.txt
+
+before_script:
+  - psql -U postgres -c 'show server_version;'
+  - psql -U postgres -c 'create database abcd;'
+  - psql -U postgres -d abcd -f sql/create.sql
+  - psql -U postgres -d abcd -f sql/views.sql
+  - bash download_data.sh
+
+script:
+  - bash test.sh
