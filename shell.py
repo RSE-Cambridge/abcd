@@ -26,7 +26,7 @@ class Shell(ABCD, cmd.Cmd):
 
 
     def do_import(self, arg):
-        from import_file import import_file
+        from .import_file import import_file
 
         for f in arg.split():
             print(f"import {f}")

@@ -1,4 +1,4 @@
-from expr import parse_query
+from .expr import parse_query
 
 class ABCD:
     def __init__(self, db):
