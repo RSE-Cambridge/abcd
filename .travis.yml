@@ -15,4 +15,4 @@ before_script:
   - psql -c 'create database abcd;' -U postgres
 
 script:
-  - ./test.sh
+  - bash test.sh
