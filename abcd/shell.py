@@ -1,5 +1,5 @@
 import cmd
-from abcd import ABCD
+from .ABCD import ABCD
 
 class Shell(ABCD, cmd.Cmd):
     prompt = '(abcd) '
