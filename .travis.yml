@@ -5,6 +5,9 @@ services:
 python:
   - "3.6"
 
+env:
+  - ABCD_DB='postgresql://postgres@localhost/abcd'
+
 install:
   - pip install -r requirements.txt
 
