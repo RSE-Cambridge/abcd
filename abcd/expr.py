@@ -1,12 +1,12 @@
 """
-command := (select <columns> | count | hist <column> | <keys>) [where <query>]
+command := (select <columns> | count | hist <column> | <keys>) [where <query> | delete where <query>]
 columns := <column> [<columns>]
 query := <expr> [(and | or) <query>]
 expr := <id> <op> ( value | <id> )
 op := gt | lt | geq | leq | eq
 """
 
-keywords = ('COUNT', 'SELECT', 'WHERE', 'HIST_NUM', 'HIST_STR')
+keywords = ('COUNT', 'SELECT', 'WHERE', 'HIST_NUM', 'HIST_STR', 'DELETE')
 
 tokens = (
     'ID', 'NUMBER', 'REAL',
@@ -33,6 +33,7 @@ def t_ID(t):
             'count': 'COUNT',
             'hist_num': 'HIST_NUM', 'hist_str': 'HIST_STR',
             'select': 'SELECT',
+            'delete': 'DELETE',
             'and': 'AND', 'or': 'OR',
             'lt': 'LT', 'leq': 'LEQ',
             'gt': 'GT', 'geq': 'GEQ',
@@ -96,6 +97,10 @@ def p_command_hist_str(t):
 def p_command_hist_str_q(t):
     'command : HIST_STR ID WHERE expression'
     t[0] = lambda table: f'select {t[2]} as value, count(*) from {table} where {t[4]} group by {t[2]} order by {t[2]}'
+
+def p_command_delete_q(t):
+    'command : DELETE WHERE expression'
+    t[0] = lambda table: f'delete from {table} where {t[3]}'
 
 def p_ids(t):
     '''ids : ID
