@@ -10,9 +10,6 @@ function run_abcd {
   echo
 }
 
-psql -f sql/create.sql
-psql -f sql/views.sql
-
 run_abcd count
 run_abcd count where $q
 run_abcd keys

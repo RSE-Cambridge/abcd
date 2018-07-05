@@ -6,13 +6,15 @@ python:
   - "3.6"
 
 env:
-  - ABCD_DB='postgresql://postgres@localhost/abcd'
+  - ABCD_DB="postgresql://postgres@localhost/abcd"
 
 install:
   - pip install -r requirements.txt
 
 before_script:
-  - psql -c 'create database abcd;' -U postgres
+  - psql -U postgres -c 'create database abcd;'
+  - psql -U postgres -d abcd -f sql/create.sql
+  - psql -U postgres -d abcd -f sql/views.sql
 
 script:
   - bash test.sh
