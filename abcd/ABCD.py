@@ -87,3 +87,7 @@ class ABCD:
             with frame as ({self.frame_query()})
                 {parse_query(f"hist_str {q}")("frame")}
         ''')
+
+
+    def delete(self, q):
+        pass
