@@ -8,7 +8,7 @@ def info(frame):
     frame_info['total_energy'] = frame.get_total_energy()
 
     return {k:Json({kk:(vv.tolist() if isinstance(vv, np.ndarray) else vv) for kk,vv in v.items() })
-        for k,v in {'info':frame_info, 'atom':frame.arrays}.items()}
+        for k,v in {'info': frame_info, 'atom': frame.arrays}.items()}
 
 def import_file(db, filename):
     frames = [info(frame) for frame in read(filename, ':')]

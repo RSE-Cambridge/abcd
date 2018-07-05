@@ -1,5 +1,3 @@
-from collections import namedtuple
-
 """
 command := (select <columns> | count | hist <column> | <keys>) [where <query>]
 columns := <column> [<columns>]

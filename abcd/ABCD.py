@@ -8,7 +8,7 @@ class ABCD:
 
     def frame_query(self):
         with self.db.cursor() as cursor:
-            cursor.execute('select key, key_type from frame_keys');
+            cursor.execute('select key, key_type from frame_keys')
             q = ['frame_id']
             for key, key_type in cursor:
                 try:
@@ -30,9 +30,6 @@ class ABCD:
         with self.db.cursor() as cursor:
             cursor.execute(sql, args)
             return cursor.fetchone()[0]
-            print(f"q_single res = {res}")
-            return res
-
 
     def typeof(self, col):
         return self.q_single('''
@@ -90,4 +87,3 @@ class ABCD:
             with frame as ({self.frame_query()})
                 {parse_query(f"hist_str {q}")("frame")}
         ''')
-

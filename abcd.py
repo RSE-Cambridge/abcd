@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-import sys, os
+import os
 from argparse import ArgumentParser
 
 parser = ArgumentParser(description='import xyz files to database')
