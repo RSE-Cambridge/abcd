@@ -5,11 +5,7 @@ services:
 python:
   - "3.6"
 addons:
-  postgresql: "10"
-  apt:
-    packages:
-    - postgresql-10
-    - postgresql-client-10
+  postgresql: "9.6"
 
 env:
   - ABCD_DB="postgresql://postgres@localhost/abcd"
