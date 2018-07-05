@@ -6,7 +6,7 @@ q="total_energy gt -15"
 
 function run_abcd {
   echo "$ abcd $@"
-  abcd $@
+  python . $@
   echo
 }
 
