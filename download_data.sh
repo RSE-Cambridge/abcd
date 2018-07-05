@@ -33,5 +33,5 @@ done
 
 for i in *.gz
 do
-  gunzip -f $i
+  gunzip -f -k $i
 done
