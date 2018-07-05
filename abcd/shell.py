@@ -32,6 +32,9 @@ class Shell(ABCD, cmd.Cmd):
             print(f"import {f}")
             import_file(self.db, f)
 
+    def do_delete(self, arg):
+        self.delete(arg)
+
 
     def do_quit(self, arg):
         return True
