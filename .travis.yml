@@ -27,3 +27,7 @@ before_script:
 script:
   - bash test_cli.sh
   - pytest
+
+notifications:
+  email: false
+
