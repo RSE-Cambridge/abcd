@@ -21,9 +21,8 @@ install:
 
 before_script:
   - psql -c 'show server_version;'
-  - psql -c 'create database abcd;'
-  - psql -d abcd -f sql/create.sql
-  - psql -d abcd -f sql/views.sql
+  - psql -f sql/create.sql
+  - psql -f sql/views.sql
   - bash download_data.sh
 
 script:
