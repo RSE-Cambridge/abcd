@@ -33,7 +33,7 @@ class Shell(ABCD, cmd.Cmd):
             import_file(self.db, f)
 
     def do_delete(self, arg):
-        print(self.delete(arg))
+        self.delete(arg)
 
 
     def do_quit(self, arg):
