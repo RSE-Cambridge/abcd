@@ -22,14 +22,30 @@ class ABCD:
             return f'(select {", ".join(q)} from frame_raw)'
 
 
-    def q_table(self, sql):
-        import pandas.io.sql as sqlio
-        return sqlio.read_sql_query(sql, self.db)
+    def q_exec(self, sql, verbose=False, *args):
+        verbose and self.q_explain(sql)
+        with self.db.cursor() as cursor:
+            cursor.execute(sql, *args)
 
-    def q_single(self, sql, *args):
+    def q_single(self, sql, verbose=False, *args):
+        verbose and self.q_explain(sql)
         with self.db.cursor() as cursor:
             cursor.execute(sql, args)
             return cursor.fetchone()[0]
+
+    def q_table(self, sql, verbose=False):
+        verbose and self.q_explain(sql)
+        import pandas.io.sql as sqlio
+        return sqlio.read_sql_query(sql, self.db)
+
+    def q_explain(self, sql):
+        from inspect import cleandoc
+        print('--------------- QUERY --------------- ')
+        print(cleandoc(sql))
+        print('---------------  PLAN --------------- ')
+        for i in self.q_table('explain ' + sql, verbose=False)['QUERY PLAN']:
+            print(i)
+
 
     def typeof(self, col):
         return self.q_single('''
