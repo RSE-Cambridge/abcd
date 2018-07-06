@@ -106,8 +106,9 @@ class ABCD:
 
 
     def delete(self, q):
-        ids = self.q_table(f'''
-            with frame as ({self.frame_query()})
+        return self.q_exec(f'''
+            delete from frame_raw where frame_id in (
+                with frame as ({self.frame_query()})
                 {parse_query(f"select frame_id {q}")("frame")}
-        ''')['frame_id']
-        return ids
+            )
+        ''', verbose=True)
