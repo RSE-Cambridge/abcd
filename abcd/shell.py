@@ -25,12 +25,9 @@ class Shell(ABCD, cmd.Cmd):
         print(self.select(arg).describe())
 
 
-    def do_import(self, arg):
-        from .import_file import import_file
-
+    def do_read(self, arg):
         for f in arg.split():
-            print(f"import {f}",
-                import_file(self.db, f))
+            print(f"read {f}", self.read(f))
 
     def do_delete(self, arg):
         self.delete(arg)
