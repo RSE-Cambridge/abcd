@@ -55,7 +55,7 @@ class ABCD:
     def count(self, q=''):
         return self.q_single(f'''
             with frame as ({self.frame_query()})
-                {parse_query(f"count {q}")("frame")}
+            {parse_query(f"count {q}")("frame")}
         ''')
 
 
@@ -90,8 +90,8 @@ class ABCD:
         from pandas import DataFrame
         count, bin = histogram(self.q_table(f'''
             with frame as ({self.frame_query()})
-                {parse_query(f"hist_num {q}")("frame")}
-        ''', verbose=True), bins=20)
+            {parse_query(f"hist_num {q}")("frame")}
+        '''), bins=20)
         return DataFrame(data=dict(
             count=count,
             freq=count/max(count),
@@ -101,7 +101,7 @@ class ABCD:
     def hist_string(self, q):
         return self.q_table(f'''
             with frame as ({self.frame_query()})
-                {parse_query(f"hist_str {q}")("frame")}
+           {parse_query(f"hist_str {q}")("frame")}
         ''')
 
 
