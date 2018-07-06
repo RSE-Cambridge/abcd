@@ -12,7 +12,7 @@ tokens = (
     'ID', 'NUMBER', 'REAL',
     'AND', 'OR', 'PLUS', 'MINUS',
     'LT', 'GT', 'LEQ', 'GEQ', 'EQ',
-    'LPAREN', 'RPAREN',
+    'LPAREN', 'RPAREN', 'STAR',
     ) + keywords
 t_PLUS    = r'\+'
 t_MINUS   = r'-'
@@ -21,6 +21,7 @@ t_GT, t_GEQ = r'>', r'>='
 t_EQ      = r'=+'
 t_LPAREN  = r'\('
 t_RPAREN  = r'\)'
+t_STAR    = r'\*'
 
 t_NUMBER  = r'\d+'
 t_REAL    = r'\d*\.\d*'
@@ -103,6 +104,9 @@ def p_ids(t):
     r = t[2] if len(t) > 2 else []
     r.append(t[1])
     t[0] = r
+def p_ids_star(t):
+    '''ids : STAR'''
+    t[0] = ['*']
 
 def p_expression_binop(t):
     '''expression : expression AND expression
