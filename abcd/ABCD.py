@@ -1,10 +1,11 @@
 from .expr import parse_query
 
 class ABCD:
-    def __init__(self, db):
+    def __init__(self, db, verbose=False):
         super().__init__()
         from psycopg2 import connect
         self.db = connect(db)
+        self.verbose = verbose
 
     def frame_query(self):
         with self.db.cursor() as cursor:
@@ -22,19 +23,19 @@ class ABCD:
             return f'(select {", ".join(q)} from frame_raw)'
 
 
-    def q_exec(self, sql, *args, verbose=False):
-        verbose and self.q_explain(sql)
+    def q_exec(self, sql, *args):
+        self.verbose and self.q_explain(sql)
         with self.db.cursor() as cursor:
             cursor.execute(sql, *args)
 
-    def q_single(self, sql, *args, verbose=False):
-        verbose and self.q_explain(sql)
+    def q_single(self, sql, *args):
+        self.verbose and self.q_explain(sql)
         with self.db.cursor() as cursor:
             cursor.execute(sql, args)
             return cursor.fetchone()[0]
 
-    def q_table(self, sql, verbose=False):
-        verbose and self.q_explain(sql)
+    def q_table(self, sql):
+        self.verbose and self.q_explain(sql)
         import pandas.io.sql as sqlio
         return sqlio.read_sql_query(sql, self.db)
 
@@ -43,8 +44,11 @@ class ABCD:
         print('--------------- QUERY --------------- ')
         print(cleandoc(sql))
         print('---------------  PLAN --------------- ')
-        for i in self.q_table('explain ' + sql, verbose=False)['QUERY PLAN']:
+        v = self.verbose
+        self.verbose = False
+        for i in self.q_table('explain ' + sql)['QUERY PLAN']:
             print(i)
+        self.verbose = v
 
 
     def typeof(self, col):
@@ -111,4 +115,4 @@ class ABCD:
                 with frame as ({self.frame_query()})
                 {parse_query(f"select frame_id {q}")("frame")}
             )
-        ''', verbose=True)
+        ''')

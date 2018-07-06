@@ -4,8 +4,8 @@ from .ABCD import ABCD
 class Shell(ABCD, cmd.Cmd):
     prompt = '(abcd) '
 
-    def __init__(self, db):
-        super().__init__(db)
+    #def __init__(self, db):
+        #super().__init__(db)
 
     def do_select(self, arg):
         print(self.select(arg))
