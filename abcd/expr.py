@@ -1,5 +1,5 @@
 """
-command := (select <columns> | count | hist <column> | <keys>) [where <query>]
+command := (select <columns> | count | hist <column> | <keys>) [where <query> ]
 columns := <column> [<columns>]
 query := <expr> [(and | or) <query>]
 expr := <id> <op> ( value | <id> )

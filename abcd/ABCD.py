@@ -1,10 +1,11 @@
 from .expr import parse_query
 
 class ABCD:
-    def __init__(self, db):
+    def __init__(self, db, verbose=False):
         super().__init__()
         from psycopg2 import connect
         self.db = connect(db)
+        self.verbose = verbose
 
     def frame_query(self):
         with self.db.cursor() as cursor:
@@ -22,14 +23,33 @@ class ABCD:
             return f'(select {", ".join(q)} from frame_raw)'
 
 
-    def q_table(self, sql):
-        import pandas.io.sql as sqlio
-        return sqlio.read_sql_query(sql, self.db)
+    def q_exec(self, sql, *args):
+        self.verbose and self.q_explain(sql)
+        with self.db, self.db.cursor() as cursor:
+            cursor.execute(sql, *args)
 
     def q_single(self, sql, *args):
+        self.verbose and self.q_explain(sql)
         with self.db.cursor() as cursor:
             cursor.execute(sql, args)
             return cursor.fetchone()[0]
+
+    def q_table(self, sql):
+        self.verbose and self.q_explain(sql)
+        import pandas.io.sql as sqlio
+        return sqlio.read_sql_query(sql, self.db)
+
+    def q_explain(self, sql, *args):
+        from inspect import cleandoc
+        print('--------------- QUERY --------------- ')
+        print(cleandoc(sql))
+        print('---------------  PLAN --------------- ')
+        v = self.verbose
+        self.verbose = False
+        for i in self.q_table('explain ' + sql)['QUERY PLAN']:
+            print(i)
+        self.verbose = v
+
 
     def typeof(self, col):
         return self.q_single('''
@@ -39,7 +59,7 @@ class ABCD:
     def count(self, q=''):
         return self.q_single(f'''
             with frame as ({self.frame_query()})
-                {parse_query(f"count {q}")("frame")}
+            {parse_query(f"count {q}")("frame")}
         ''')
 
 
@@ -62,7 +82,7 @@ class ABCD:
     def select(self, q):
         return self.q_table(f'''
             with frame as ({self.frame_query()})
-                {parse_query(f"select {q}")("frame")}
+            {parse_query(f"select {q}")("frame")}
         ''')
 
 
@@ -74,7 +94,7 @@ class ABCD:
         from pandas import DataFrame
         count, bin = histogram(self.q_table(f'''
             with frame as ({self.frame_query()})
-                {parse_query(f"hist_num {q}")("frame")}
+            {parse_query(f"hist_num {q}")("frame")}
         '''), bins=20)
         return DataFrame(data=dict(
             count=count,
@@ -85,5 +105,14 @@ class ABCD:
     def hist_string(self, q):
         return self.q_table(f'''
             with frame as ({self.frame_query()})
-                {parse_query(f"hist_str {q}")("frame")}
+           {parse_query(f"hist_str {q}")("frame")}
+        ''')
+
+
+    def delete(self, q):
+        return self.q_exec(f'''
+            delete from frame_raw where frame_id in (
+                with frame as ({self.frame_query()})
+                {parse_query(f"select frame_id {q}")("frame")}
+            )
         ''')

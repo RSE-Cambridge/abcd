@@ -4,8 +4,8 @@ from .ABCD import ABCD
 class Shell(ABCD, cmd.Cmd):
     prompt = '(abcd) '
 
-    def __init__(self, db):
-        super().__init__(db)
+    #def __init__(self, db):
+        #super().__init__(db)
 
     def do_select(self, arg):
         print(self.select(arg))
@@ -29,8 +29,11 @@ class Shell(ABCD, cmd.Cmd):
         from .import_file import import_file
 
         for f in arg.split():
-            print(f"import {f}")
-            import_file(self.db, f)
+            print(f"import {f}",
+                import_file(self.db, f))
+
+    def do_delete(self, arg):
+        self.delete(arg)
 
 
     def do_quit(self, arg):
