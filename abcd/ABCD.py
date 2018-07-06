@@ -82,7 +82,7 @@ class ABCD:
     def select(self, q):
         return self.q_table(f'''
             with frame as ({self.frame_query()})
-                {parse_query(f"select {q}")("frame")}
+            {parse_query(f"select {q}")("frame")}
         ''')
 
 
