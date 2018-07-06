@@ -132,6 +132,16 @@ class ABCD:
                     frames, page_size=500)
         return len(frames)
 
+    def write(self, filename, q):
+        from ase.io import write
+            
+        print(f"writing {self.count(q)} frames to {filename}")
+        data = self.q_table(f'''
+            with frame as ({self.frame_query()})
+            {parse_query(f"select * {q}")("frame")}
+        ''')
+        print(data)
+
     def delete(self, q):
         return self.q_exec(f'''
             delete from frame_raw where frame_id in (
