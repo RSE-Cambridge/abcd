@@ -25,7 +25,7 @@ class ABCD:
 
     def q_exec(self, sql, *args):
         self.verbose and self.q_explain(sql)
-        with self.db.cursor() as cursor:
+        with self.db, self.db.cursor() as cursor:
             cursor.execute(sql, *args)
 
     def q_single(self, sql, *args):
