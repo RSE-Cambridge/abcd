@@ -12,6 +12,6 @@ def info(frame):
 
 def import_file(db, filename):
     frames = [info(frame) for frame in read(filename, ':')]
-    with db:
-        execute_batch(db.cursor(), "insert into frame_raw (info) values (%(info)s)", frames, page_size=500)
+    with db, db.cursor() as cursor:
+        execute_batch(cursor, "insert into frame_raw (info) values (%(info)s)", frames, page_size=500)
     return len(frames)
