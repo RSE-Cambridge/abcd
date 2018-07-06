@@ -29,8 +29,8 @@ class Shell(ABCD, cmd.Cmd):
         from .import_file import import_file
 
         for f in arg.split():
-            print(f"import {f}")
-            import_file(self.db, f)
+            print(f"import {f}",
+                import_file(self.db, f))
 
     def do_delete(self, arg):
         self.delete(arg)
