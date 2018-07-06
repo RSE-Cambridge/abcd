@@ -10,7 +10,7 @@ function run_abcd {
   echo
 }
 
-run_abcd import data/*.xyz
+run_abcd read data/*.xyz
 
 run_abcd count
 run_abcd count where $q
