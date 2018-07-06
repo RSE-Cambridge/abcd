@@ -22,12 +22,12 @@ class ABCD:
             return f'(select {", ".join(q)} from frame_raw)'
 
 
-    def q_exec(self, sql, verbose=False, *args):
+    def q_exec(self, sql, *args, verbose=False):
         verbose and self.q_explain(sql)
         with self.db.cursor() as cursor:
             cursor.execute(sql, *args)
 
-    def q_single(self, sql, verbose=False, *args):
+    def q_single(self, sql, *args, verbose=False):
         verbose and self.q_explain(sql)
         with self.db.cursor() as cursor:
             cursor.execute(sql, args)
@@ -38,7 +38,7 @@ class ABCD:
         import pandas.io.sql as sqlio
         return sqlio.read_sql_query(sql, self.db)
 
-    def q_explain(self, sql):
+    def q_explain(self, sql, *args):
         from inspect import cleandoc
         print('--------------- QUERY --------------- ')
         print(cleandoc(sql))
@@ -91,7 +91,7 @@ class ABCD:
         count, bin = histogram(self.q_table(f'''
             with frame as ({self.frame_query()})
                 {parse_query(f"hist_num {q}")("frame")}
-        '''), bins=20)
+        ''', verbose=True), bins=20)
         return DataFrame(data=dict(
             count=count,
             freq=count/max(count),
