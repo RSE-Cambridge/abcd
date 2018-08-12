@@ -126,7 +126,7 @@ class ABCD:
                 for k,v in {'info': frame_info, 'atom': frame.arrays}.items() 
             }
 
-        frames = map(info, read(filename, ':'))
+        frames = [info(f) for f in read(filename, ':')]
         with self.db, self.db.cursor() as cursor:
             execute_batch(cursor, "insert into frame_raw (info) values (%(info)s)",
                     frames, page_size=500)
