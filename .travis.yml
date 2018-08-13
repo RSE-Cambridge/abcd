@@ -20,7 +20,7 @@ install:
 
 before_script:
   - psql -c 'show server_version;'
-  - psql -f sql/*.sql
+  - psql -f images/db/*.sql
   - bash download_data.sh
 
 script:
