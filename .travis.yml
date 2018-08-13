@@ -20,8 +20,7 @@ install:
 
 before_script:
   - psql -c 'show server_version;'
-  - psql -f sql/create.sql
-  - psql -f sql/views.sql
+  - psql -f sql/*.sql
   - bash download_data.sh
 
 script:
