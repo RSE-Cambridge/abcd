@@ -1,27 +1,21 @@
 #!/bin/bash
 set -euo pipefail
 
-dir=$(dirname $0)
 q="total_energy gt -15"
 
-function run_abcd {
-  echo "$ abcd $@"
-  python abcd.py $@
-  echo
-}
+set -x
+abcd read data/*.xyz
 
-run_abcd read data/*.xyz
-
-run_abcd count
-run_abcd count where $q
-run_abcd keys
-run_abcd keys where $q
-run_abcd stats total_energy
-run_abcd stats total_energy where $q
-run_abcd stats total_energy degauss
-run_abcd stats total_energy degauss where $q
+abcd count
+abcd count where $q
+abcd keys
+abcd keys where $q
+abcd stats total_energy
+abcd stats total_energy where $q
+abcd stats total_energy degauss
+abcd stats total_energy degauss where $q
 
 q='total_energy lt -269950'
-run_abcd count  where $q
-run_abcd delete where $q
-run_abcd count  where $q
+abcd count  where $q
+abcd delete where $q
+abcd count  where $q
