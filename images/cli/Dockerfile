@@ -3,11 +3,10 @@ MAINTAINER Jeffrey Salmond <js947@cam.ac.uk>
 
 WORKDIR /usr/src/app
 
-COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
-
+COPY setup.py .
+COPY abcd.py .
 COPY abcd abcd
-COPY abcd.py abcd.py
-RUN ls
 
-ENTRYPOINT [ "python", "./abcd.py" ]
+RUN pip install --no-cache-dir .
+
+ENTRYPOINT [ "python", "abcd.py" ]
