@@ -4,6 +4,6 @@ setup(
         name='abcd',
         version='0.1',
         packages=['abcd'],
-        scripts=['abcd.py'],
-        install_requires=['psycopg2-binary', 'pandas', 'ply', 'ase']
+        install_requires=['psycopg2-binary', 'pandas', 'ply', 'ase'],
+        entry_points={'console_scripts': ['abcd = abcd.__main__:main']}
         )
