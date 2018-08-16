@@ -4,9 +4,8 @@ MAINTAINER Jeffrey Salmond <js947@cam.ac.uk>
 WORKDIR /usr/src/app
 
 COPY setup.py .
-COPY abcd.py .
 COPY abcd abcd
 
 RUN pip install --no-cache-dir .
 
-ENTRYPOINT [ "python", "abcd.py" ]
+ENTRYPOINT [ "abcd" ]
