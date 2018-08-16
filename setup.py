@@ -5,5 +5,5 @@ setup(
         version='0.1',
         packages=['abcd'],
         scripts=['abcd.py'],
-        install_requires=['psycopg2', 'pandas', 'ply', 'ase']
+        install_requires=['psycopg2-binary', 'pandas', 'ply', 'ase']
         )
