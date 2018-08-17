@@ -15,6 +15,9 @@ abcd stats total_energy where $q
 abcd stats total_energy degauss
 abcd stats total_energy degauss where $q
 
+abcd hist config_type
+abcd count where config_type = \"bcc_bulk_54_high\"
+
 q='total_energy lt -269950'
 abcd count  where $q
 abcd delete where $q

@@ -9,7 +9,7 @@ op := gt | lt | geq | leq | eq
 keywords = ('COUNT', 'SELECT', 'WHERE', 'HIST_NUM', 'HIST_STR')
 
 tokens = (
-    'ID', 'NUMBER', 'REAL',
+    'ID', 'NUMBER', 'REAL', 'STRING',
     'AND', 'OR', 'PLUS', 'MINUS',
     'LT', 'GT', 'LEQ', 'GEQ', 'EQ',
     'LPAREN', 'RPAREN',
@@ -25,6 +25,11 @@ t_RPAREN  = r'\)'
 t_NUMBER  = r'\d+'
 t_REAL    = r'\d*\.\d*'
 
+def t_STRING(t):
+    r'\"[a-zA-Z0-9_]*\"'
+    t.value = t.value.strip('"')
+    return t
+
 def t_ID(t):
     r'[a-zA-Z_][a-zA-Z0-9_]*'
     try:
@@ -36,6 +41,7 @@ def t_ID(t):
             'and': 'AND', 'or': 'OR',
             'lt': 'LT', 'leq': 'LEQ',
             'gt': 'GT', 'geq': 'GEQ',
+            'eq': 'EQ',
         }[t.value]
         t.value = {
             'LT': t_LT, 'LEQ': t_LEQ,
@@ -131,6 +137,10 @@ def p_expression_term(t):
     expression : REAL
     '''
     t[0] = t[1]
+def p_expression_string(t):
+    'expression : STRING'
+    t[0] = "'" + t[1] + "'"
+    
 
 def p_error(t):
     print("Syntax error at '%s'" % t.value)
