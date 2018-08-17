@@ -41,6 +41,7 @@ def t_ID(t):
             'and': 'AND', 'or': 'OR',
             'lt': 'LT', 'leq': 'LEQ',
             'gt': 'GT', 'geq': 'GEQ',
+            'eq': 'EQ',
         }[t.value]
         t.value = {
             'LT': t_LT, 'LEQ': t_LEQ,
