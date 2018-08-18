@@ -8,11 +8,6 @@ python:
   - "3.6"
 addons:
   postgresql: "9.6"
-  apt:
-    sources:
-    - sourceline: 'ppa:duggan/bats'
-    packages:
-    - bats
 
 cache:
   directories:
