@@ -27,9 +27,9 @@ before_script:
   - bash download_data.sh
 
 script:
-  - bats test_cli/*
   - abcd read data/*
   - pytest
+  - bats test_cli/*
 
 notifications:
   email: false
