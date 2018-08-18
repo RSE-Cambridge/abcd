@@ -132,7 +132,7 @@ class ABCD:
                     frames, page_size=500)
         return len(frames)
 
-    def tag(self, key, value, q):
+    def update(self, key, value, q):
         return self.q_exec('''
             update frame_raw set info = jsonb_set(info, '{%s}', '%s', true) where frame_id in (
                 with frame as (%s) %s
