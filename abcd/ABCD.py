@@ -132,6 +132,13 @@ class ABCD:
                     frames, page_size=500)
         return len(frames)
 
+    def set(self, key, value, q):
+        return self.q_exec('''
+            update frame_raw set info = jsonb_set(info, '{%s}', '%s', true) where frame_id in (
+                with frame as (%s) %s
+            )
+        '''%(key, value, self.frame_query(), parse_query(f"select frame_id {q}")("frame"))) 
+
     def delete(self, q):
         return self.q_exec(f'''
             delete from frame_raw where frame_id in (

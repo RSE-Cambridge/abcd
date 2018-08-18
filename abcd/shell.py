@@ -4,8 +4,9 @@ from .ABCD import ABCD
 class Shell(ABCD, cmd.Cmd):
     prompt = '(abcd) '
 
-    #def __init__(self, db):
-        #super().__init__(db)
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.error = False
 
     def do_select(self, arg):
         print(self.select(arg))
@@ -29,8 +30,20 @@ class Shell(ABCD, cmd.Cmd):
         for f in arg.split():
             print(f"read {f}", self.read(f))
 
+    def do_set(self, arg):
+        key, value, *rest = arg.split()
+        self.set(key, value, ' '.join(rest))
+
     def do_delete(self, arg):
         self.delete(arg)
+
+    def default(self, arg):
+        super().default(arg)
+        self.error = True
+
+    def onecmd(self, arg):
+        super().onecmd(arg)
+        return self.error
 
 
     def do_quit(self, arg):

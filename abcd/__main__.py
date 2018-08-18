@@ -1,3 +1,4 @@
+from sys import exit
 from os import getenv
 from argparse import ArgumentParser
 from abcd import Shell
@@ -12,9 +13,9 @@ def main():
 
 
     if args.query:
-        Shell(args.db, args.v).onecmd(' '.join(args.query))
+        return Shell(args.db, args.v).onecmd(' '.join(args.query))
     else:
-        Shell(args.db, args.v).cmdloop(intro='connected to %s' % args.db)
+        return Shell(args.db, args.v).cmdloop(intro='connected to %s' % args.db)
 
 if __name__ == '__main__':
-    main()
+    exit(main())
