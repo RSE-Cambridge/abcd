@@ -2,7 +2,7 @@
 
 q='total_energy lt -269950'
 
-@test "delete where $q""
+@test "delete where $q" {
 n_before=$(abcd count where $q)
 abcd delete where $q
 n_after=$(abcd count where $q)
