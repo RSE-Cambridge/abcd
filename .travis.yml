@@ -1,4 +1,6 @@
 language: python
+sudo: false
+dist: trusty
 services:
   - postgresql
 
@@ -25,7 +27,8 @@ before_script:
   - bash download_data.sh
 
 script:
-  - bash test_cli.sh
+  - bats --version
+  - bats test_cli/*
   - pytest
 
 notifications:
