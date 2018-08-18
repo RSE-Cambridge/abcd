@@ -7,3 +7,8 @@ q='total_energy lt -269950'
   abcd delete where $q
   [ 0 -eq $(abcd count where $q) ]
 }
+
+@test "delete (everything)" {
+  abcd delete
+  [ 0 -eq $(abcd count) ]
+}
