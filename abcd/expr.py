@@ -1,11 +1,3 @@
-"""
-command := (select <columns> | count | hist <column> | <keys>) [where <query> ]
-columns := <column> [<columns>]
-query := <expr> [(and | or) <query>]
-expr := <id> <op> ( value | <id> )
-op := gt | lt | geq | leq | eq
-"""
-
 keywords = ('COUNT', 'SELECT', 'WHERE', 'HIST_NUM', 'HIST_STR')
 
 tokens = (
