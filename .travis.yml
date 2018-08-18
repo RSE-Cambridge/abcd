@@ -28,6 +28,7 @@ before_script:
 
 script:
   - bats test_cli/*
+  - abcd read data/*
   - pytest
 
 notifications:
