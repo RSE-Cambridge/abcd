@@ -27,7 +27,7 @@ before_script:
   - bash download_data.sh
 
 script:
-  - bats test_cli/*
+  - bats test/*
 
 notifications:
   email: false
