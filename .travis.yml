@@ -27,7 +27,7 @@ before_script:
   - bash download_data.sh
 
 script:
-  - abcd read data/*
+  - abcd read data/*.xyz
   - pytest
   - bats test_cli/*
 
