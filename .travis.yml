@@ -27,7 +27,6 @@ before_script:
   - bash download_data.sh
 
 script:
-  - bats --version
   - bats test_cli/*
   - pytest
 
