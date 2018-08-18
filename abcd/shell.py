@@ -30,6 +30,10 @@ class Shell(ABCD, cmd.Cmd):
         for f in arg.split():
             print(f"read {f}", self.read(f))
 
+    def do_tag(self, arg):
+        tag, *rest = arg.split()
+        self.tag(tag, ' '.join(rest))
+
     def do_delete(self, arg):
         self.delete(arg)
 

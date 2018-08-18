@@ -2,11 +2,11 @@
 
 q='total_energy lt -269950'
 
-@test "update where interest=999 where config_type = \"gamma_surface_112\"" {
-  abcd update science=\"iscool\" where config_type = \"gamma_surface_112\"
+@test "tag \"stuff=nice999\" where config_type = \"gamma_surface_112\"" {
+  abcd tag \"stuff=nice999\" where config_type = \"gamma_surface_112\"
 }
 
-@test "update where science=\"iscool\" where config_type = \"gamma_surface_110\"" {
-  abcd update science=\"iscool\" where config_type = \"gamma_surface_110\"
+@test "tag \"scienceiscool\" where config_type = \"gamma_surface_110\"" {
+  abcd tag \"scienceiscool\" where config_type = \"gamma_surface_110\"
 }
 
