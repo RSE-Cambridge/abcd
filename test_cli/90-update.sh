@@ -14,3 +14,9 @@ q='total_energy lt -269950'
   [ $n -eq $(abcd count where tag = \"scienceiscool\") ]
 }
 
+@test "set config_type \"big_mistake\" where config_type = \"gamma_surface_110\"" {
+  n=$(abcd count where config_type = \"gamma_surface_110\")
+  abcd set config_type \"big_mistake\" where config_type = \"gamma_surface_110\"
+  [ $n -eq $(abcd count where config_type = \"big_mistake\") ]
+  [  0 -eq $(abcd count where config_type = \"gamma_surface_110\") ]
+}
