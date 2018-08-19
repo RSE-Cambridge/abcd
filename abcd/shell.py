@@ -29,6 +29,9 @@ class Shell(ABCD, cmd.Cmd):
     def do_read(self, arg):
         for f in arg.split():
             print(f"read {f}", self.read(f))
+    def do_write(self, arg):
+        filename, *q = arg.split()
+        self.write(filename, ' '.join(q))
 
     def do_set(self, arg):
         key, value, *rest = arg.split()

@@ -110,7 +110,7 @@ class ABCD:
 
 
     def read(self, filename):
-        import numpy as np
+        from numpy import ndarray
         from psycopg2.extras import execute_batch, Json
         from ase.io import read
 
@@ -120,7 +120,7 @@ class ABCD:
 
             return {
                 k:Json({
-                    kk:(vv.tolist() if isinstance(vv, np.ndarray) else vv)
+                    kk:(vv.tolist() if isinstance(vv, ndarray) else vv)
                     for kk,vv in v.items() 
                 })
                 for k,v in {'info': frame_info, 'atom': frame.arrays}.items() 
@@ -128,9 +128,33 @@ class ABCD:
 
         frames = [info(f) for f in read(filename, ':')]
         with self.db, self.db.cursor() as cursor:
-            execute_batch(cursor, "insert into frame_raw (info) values (%(info)s)",
+            execute_batch(cursor, "insert into frame_raw (info, atom) values (%(info)s, %(atom)s)",
                     frames, page_size=500)
         return len(frames)
+
+    def write(self, filename, q):
+        from ase import Atoms
+        from ase.io import write
+        from numpy import asarray
+
+        frames = []
+        for index, frame in self.q_table(f'''
+            select info, atom from frame_raw where frame_id in (
+                with frame as ({self.frame_query()})
+                {parse_query(f"select frame_id")("frame")}
+            )
+        ''').iterrows():
+            a = Atoms(numbers=frame.atom['numbers'], positions=frame.atom['positions'])
+            a.info = {k:v for k, v in frame.info.items() if k != "total_energy"}
+            for k, v in frame.atom.items():
+                if k == 'positions':
+                    continue
+                if k == 'numbers':
+                    continue
+                a.new_array(k, asarray(v))
+            frames.append(a)
+
+        write(filename, frames)
 
     def set(self, key, value, q):
         return self.q_exec('''
