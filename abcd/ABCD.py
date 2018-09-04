@@ -24,20 +24,20 @@ class ABCD:
 
 
     def q_exec(self, sql, *args):
-        self.verbose and self.q_explain(sql)
+        self.verbose and self.q_explain(sql, *args)
         with self.db, self.db.cursor() as cursor:
-            cursor.execute(sql, *args)
+            cursor.execute(sql, args)
 
     def q_single(self, sql, *args):
-        self.verbose and self.q_explain(sql)
+        self.verbose and self.q_explain(sql, *args)
         with self.db.cursor() as cursor:
             cursor.execute(sql, args)
             return cursor.fetchone()[0]
 
-    def q_table(self, sql):
+    def q_table(self, sql, *args):
         self.verbose and self.q_explain(sql)
         import pandas.io.sql as sqlio
-        return sqlio.read_sql_query(sql, self.db)
+        return sqlio.read_sql_query(sql, self.db, params=args)
 
     def q_explain(self, sql, *args):
         from inspect import cleandoc
@@ -46,7 +46,7 @@ class ABCD:
         print('---------------  PLAN --------------- ')
         v = self.verbose
         self.verbose = False
-        for i in self.q_table('explain ' + sql)['QUERY PLAN']:
+        for i in self.q_table('explain ' + sql, *args)['QUERY PLAN']:
             print(i)
         self.verbose = v
 
